@@ -1,0 +1,191 @@
+<!--
+  AI Chat History Cleaner - Options Page
+  @author yxstars@outlook.com
+  @copyright Copyright (c) 2026 yxstars@outlook.com. All rights reserved.
+  @license MIT License
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>AI History Cleaner 设置</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f7fa;
+      color: #333;
+    }
+    
+    h1 {
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .card h3 {
+      color: #667eea;
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+    
+    .option {
+      margin-bottom: 16px;
+    }
+    
+    .option:last-child {
+      margin-bottom: 0;
+    }
+    
+    label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+      accent-color: #667eea;
+    }
+    
+    input[type="number"] {
+      width: 80px;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-left: 8px;
+    }
+    
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    .hint {
+      font-size: 12px;
+      color: #888;
+      margin-top: 6px;
+      margin-left: 28px;
+    }
+    
+    .btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .btn:hover {
+      background: #5a6fd6;
+    }
+    
+    .status {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    
+    .status.success {
+      display: block;
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .shortcut {
+      background: #f8f9fa;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-family: 'Consolas', monospace;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚙️ AI历史记录清理器</h1>
+  <p class="subtitle">v2.0 增强版设置</p>
+  
+  <div class="card">
+    <h3>删除选项</h3>
+    
+    <div class="option">
+      <label>
+        <input type="checkbox" id="confirmBeforeDelete" checked>
+        删除前显示确认对话框
+      </label>
+      <p class="hint">开启后会在删除前弹出确认提示，防止误删</p>
+    </div>
+    
+    <div class="option">
+      <label>
+        <input type="checkbox" id="keepRecent" checked>
+        保留最近的对话记录
+      </label>
+      <p class="hint">保留数量：<input type="number" id="keepCount" value="3" min="0" max="20"> 条</p>
+    </div>
+  </div>
+  
+  <div class="card">
+    <h3>操作设置</h3>
+    
+    <div class="option">
+      <label>
+        删除间隔：
+        <input type="number" id="deleteInterval" value="1500" min="500" max="5000" step="100">
+        毫秒
+      </label>
+      <p class="hint">建议保持1000ms以上，避免触发网站反爬虫机制</p>
+    </div>
+    
+    <div class="option">
+      <label>
+        最大重试次数：
+        <input type="number" id="maxRetries" value="3" min="1" max="5">
+      </label>
+      <p class="hint">删除失败时的最大重试次数</p>
+    </div>
+  </div>
+  
+  <div class="card">
+    <h3>快捷键</h3>
+    <div class="shortcut">
+      Alt + Shift + D ：快速启动清理
+    </div>
+  </div>
+  
+  <button class="btn" id="saveBtn">保存设置</button>
+  <div class="status" id="status">✅ 设置已保存！</div>
+  
+  <script src="options.js"></script>
+</body>
+</html>

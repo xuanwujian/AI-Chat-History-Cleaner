@@ -1,0 +1,337 @@
+<!--
+  AI Chat History Cleaner - Chrome Extension
+  @author yxstars@outlook.com
+  @copyright Copyright (c) 2026 yxstars@outlook.com. All rights reserved.
+  @license MIT License
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI历史记录清理器 v3</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 380px;
+      min-height: 480px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .header p {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .status-card {
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .status-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .status-label {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .status-value {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .status-value.supported {
+      color: #90EE90;
+    }
+
+    .status-value.unsupported {
+      color: #FFB6C1;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: #667eea;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-danger {
+      background: #ff4757;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    .progress-section {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .progress-section.active {
+      display: block;
+    }
+
+    .progress-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 12px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .stat-value.success {
+      color: #90EE90;
+    }
+
+    .stat-value.error {
+      color: #FFB6C1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    .log-container {
+      max-height: 140px;
+      overflow-y: auto;
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 11px;
+      font-family: 'Consolas', 'Monaco', monospace;
+    }
+
+    .log-item {
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      line-height: 1.3;
+    }
+
+    .log-item:last-child {
+      border-bottom: none;
+    }
+
+    .log-time {
+      color: #87CEEB;
+      margin-right: 6px;
+    }
+
+    .log-success {
+      color: #90EE90;
+    }
+
+    .log-error {
+      color: #FFB6C1;
+    }
+
+    .log-warning {
+      color: #FFE4B5;
+    }
+
+    .log-info {
+      color: #fff;
+    }
+
+    .log-debug {
+      color: #B0C4DE;
+      opacity: 0.8;
+    }
+
+    .supported-sites {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .supported-sites h3 {
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+
+    .sites-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+    }
+
+    .site-tag {
+      font-size: 9px;
+      padding: 4px 5px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .footer {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 9px;
+      opacity: 0.6;
+    }
+
+    /* 滚动条样式 */
+    .log-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .log-container::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+    }
+
+    .log-container::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🧹 AI历史记录清理器</h1>
+      <p>v3.0 超级增强版 - 支持API批量删除</p>
+    </div>
+
+    <div class="status-card">
+      <div class="status-row">
+        <span class="status-label">当前网站</span>
+        <span class="status-value" id="siteName">检测中...</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">支持状态</span>
+        <span class="status-value" id="siteStatus">--</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">运行状态</span>
+        <span class="status-value" id="runStatus">就绪</span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="startBtn">
+      ▶ 开始删除历史记录
+    </button>
+
+    <button class="btn btn-danger" id="stopBtn" style="display: none;">
+      ⏹ 停止删除
+    </button>
+
+    <button class="btn btn-secondary" id="refreshBtn" style="display: none;">
+      🔄 重新检测
+    </button>
+
+    <div class="progress-section" id="progressSection">
+      <div class="progress-stats">
+        <div class="stat-item">
+          <div class="stat-value success" id="deletedCount">0</div>
+          <div class="stat-label">已删除</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value error" id="failedCount">0</div>
+          <div class="stat-label">失败</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="totalCount">0</div>
+          <div class="stat-label">总计</div>
+        </div>
+      </div>
+
+      <div class="log-container" id="logContainer">
+        <div class="log-item">等待开始...</div>
+      </div>
+    </div>
+
+    <div class="supported-sites">
+      <h3>✅ 支持的平台 (14个)</h3>
+      <div class="sites-grid">
+        <div class="site-tag">ChatGPT</div>
+        <div class="site-tag">Claude</div>
+        <div class="site-tag">Gemini</div>
+        <div class="site-tag">DeepSeek</div>
+        <div class="site-tag">Grok</div>
+        <div class="site-tag">豆包</div>
+        <div class="site-tag">通义千问</div>
+        <div class="site-tag">Kimi</div>
+        <div class="site-tag">智谱清言</div>
+        <div class="site-tag">腾讯元宝</div>
+        <div class="site-tag">Perplexity</div>
+        <div class="site-tag">Copilot</div>
+        <div class="site-tag">Poe</div>
+        <div class="site-tag">+ 更多</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      ✓ 安全清理 ✓ 本地运行 ✓ 支持API批量删除 ✓ 不上传数据
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
