@@ -1,46 +1,42 @@
-/**
- * AI Chat History Cleaner - Chrome Extension
- * 
- * @author yxstars@outlook.com
- * @copyright Copyright (c) 2026 yxstars@outlook.com. All rights reserved.
- * @license MIT License
- * @version 3.0.1
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files, to deal in the Software
- * without restriction, including without limitation the rights to use, copy,
- * modify, merge, publish, distribute, sublicense, and/or sell copies of the Software.
- */
 {
   "manifest_version": 3,
-  "name": "AI Chat History Cleaner - 增强版",
-  "version": "3.0.1",
-  "description": "一键删除各大AI对话平台的历史记录 - 支持API批量删除+DOM逐条删除双模式(v3.0.1修复版)",
+  "name": "ChatEraser - 清聊大师",
+  "version": "3.0.5",
+  "description": "One-click bulk delete AI chat history. Supports ChatGPT, Claude, Gemini, DeepSeek, Kimi, and Doubao.",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "permissions": [
     "activeTab",
     "scripting",
     "storage",
-    "tabs"
+    "tabs",
+    "debugger",
+    "history"
   ],
   "host_permissions": [
     "*://chat.openai.com/*",
     "*://chatgpt.com/*",
-    "*://www.doubao.com/*",
-    "*://tongyi.aliyun.com/*",
+    "*://claude.ai/*",
     "*://gemini.google.com/*",
     "*://chat.deepseek.com/*",
     "*://kimi.moonshot.cn/*",
-    "*://grok.com/*",
-    "*://claude.ai/*",
-    "*://chatglm.cn/*",
-    "*://yuanbao.tencent.com/*",
-    "*://www.perplexity.ai/*",
-    "*://copilot.microsoft.com/*",
-    "*://poe.com/*"
+    "*://www.kimi.com/*",
+    "*://kimi.com/*",
+    "*://www.doubao.com/*"
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "AI历史记录清理器 v3"
+    "default_title": "ChatEraser 清聊大师",
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
   },
   "background": {
     "service_worker": "background.js"
@@ -50,29 +46,37 @@
       "matches": [
         "*://chat.openai.com/*",
         "*://chatgpt.com/*",
-        "*://www.doubao.com/*",
-        "*://tongyi.aliyun.com/*",
+        "*://claude.ai/*",
         "*://gemini.google.com/*",
         "*://chat.deepseek.com/*",
         "*://kimi.moonshot.cn/*",
-        "*://grok.com/*",
-        "*://claude.ai/*",
-        "*://chatglm.cn/*",
-        "*://yuanbao.tencent.com/*",
-        "*://www.perplexity.ai/*",
-        "*://copilot.microsoft.com/*",
-        "*://poe.com/*"
+        "*://www.kimi.com/*",
+        "*://kimi.com/*",
+        "*://www.doubao.com/*"
       ],
       "js": ["content.js"],
       "run_at": "document_idle",
       "all_frames": false
     }
   ],
-  "options_page": "options.html",
   "web_accessible_resources": [
     {
       "resources": ["injected.js"],
-      "matches": ["<all_urls>"]
+      "matches": [
+        "*://chat.openai.com/*",
+        "*://chatgpt.com/*",
+        "*://claude.ai/*",
+        "*://gemini.google.com/*",
+        "*://chat.deepseek.com/*",
+        "*://kimi.moonshot.cn/*",
+        "*://www.kimi.com/*",
+        "*://kimi.com/*",
+        "*://www.doubao.com/*"
+      ]
     }
-  ]
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  }
 }

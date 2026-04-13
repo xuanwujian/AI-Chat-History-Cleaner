@@ -1,5 +1,5 @@
 <!--
-  AI Chat History Cleaner - Chrome Extension
+  ChatEraser - 清聊大师 Chrome Extension
   @author yxstars@outlook.com
   @copyright Copyright (c) 2026 yxstars@outlook.com. All rights reserved.
   @license MIT License
@@ -9,7 +9,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI历史记录清理器 v3</title>
+  <title>ChatEraser 清聊大师</title>
   <style>
     * {
       margin: 0;
@@ -236,6 +236,64 @@
       opacity: 0.6;
     }
 
+    .github-link {
+      display: block;
+      margin-top: 6px;
+      text-align: center;
+      font-size: 10px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+    }
+
+    .github-link:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    .history-clean-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .history-clean-row:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .history-clean-row input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      accent-color: #90EE90;
+      flex-shrink: 0;
+    }
+
+    .history-clean-row label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.85);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .history-clean-status {
+      display: none;
+      text-align: center;
+      font-size: 10px;
+      color: #90EE90;
+      margin-top: 4px;
+    }
+
+    .history-clean-status.show {
+      display: block;
+    }
+
     /* 滚动条样式 */
     .log-container::-webkit-scrollbar {
       width: 6px;
@@ -255,7 +313,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🧹 AI历史记录清理器</h1>
+      <h1>🧹 清聊大师 ChatEraser</h1>
       <p>v3.0 超级增强版 - 支持API批量删除</p>
     </div>
 
@@ -308,28 +366,30 @@
     </div>
 
     <div class="supported-sites">
-      <h3>✅ 支持的平台 (14个)</h3>
+      <h3>✅ 支持的平台 (6个)</h3>
       <div class="sites-grid">
-        <div class="site-tag">ChatGPT</div>
-        <div class="site-tag">Claude</div>
-        <div class="site-tag">Gemini</div>
-        <div class="site-tag">DeepSeek</div>
-        <div class="site-tag">Grok</div>
         <div class="site-tag">豆包</div>
-        <div class="site-tag">通义千问</div>
+        <div class="site-tag">DeepSeek</div>
         <div class="site-tag">Kimi</div>
-        <div class="site-tag">智谱清言</div>
-        <div class="site-tag">腾讯元宝</div>
-        <div class="site-tag">Perplexity</div>
-        <div class="site-tag">Copilot</div>
-        <div class="site-tag">Poe</div>
-        <div class="site-tag">+ 更多</div>
+        <div class="site-tag">Claude</div>
+        <div class="site-tag">ChatGPT</div>
+        <div class="site-tag">Gemini</div>
       </div>
     </div>
 
     <div class="footer">
       ✓ 安全清理 ✓ 本地运行 ✓ 支持API批量删除 ✓ 不上传数据
     </div>
+
+    <a class="github-link" id="githubLink" href="#">
+      🐙 GitHub: AI-Chat-History-Cleaner
+    </a>
+
+    <div class="history-clean-row" id="historyCleanRow">
+      <input type="checkbox" id="historyCleanCheck">
+      <label for="historyCleanCheck">清空所有浏览器历史记录</label>
+    </div>
+    <div class="history-clean-status" id="historyCleanStatus">✅ 已清理浏览历史</div>
   </div>
 
   <script src="popup.js"></script>
