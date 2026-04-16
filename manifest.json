@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ChatEraser - 清聊大师",
   "version": "3.0.5",
-  "description": "One-click bulk delete AI chat history. Supports ChatGPT, Claude, Gemini, DeepSeek, Kimi, and Doubao.",
+  "description": "Bulk delete your AI chat conversation history with one click. Fast, private, and fully local — no data leaves your browser.",
   "icons": {
     "16": "icon16.png",
     "32": "icon32.png",
